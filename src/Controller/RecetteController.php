@@ -73,4 +73,15 @@ class RecetteController extends AbstractController{
 
 		return new Response(0);
 	}
+
+	/**
+     * @Route("/delete/{id}")
+     */
+    public function delete (RecetteRepository $recetteRepository, $id){
+        $recette = $recetteRepository->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($recette);
+       // $em->flush();
+        return new Response(0);
+	}
 }

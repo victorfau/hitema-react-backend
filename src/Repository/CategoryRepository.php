@@ -19,9 +19,10 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-     /**
-      * @return Category[] Returns an array of Category objects
-      */
+    /**
+     * @param int $id
+     * @return void Returns an array of Category objects
+     */
 
    // public function add($value)
    // {
@@ -46,4 +47,13 @@ class CategoryRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function getArticleFromCategory ($idCategory){
+        $qb = $this->createQueryBuilder('a');
+        $qb->add('select', 'a');
+        $qb->leftJoin('a.recette_category', 'c');
+        $qb->where('c.category_id LIKE :recette_category'); /* i have guessed a.name */
+        $qb->setParameter('category', $idCategory);
+        $qb->getQuery()->getResult();
+    }
 }

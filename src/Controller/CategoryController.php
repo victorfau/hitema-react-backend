@@ -30,8 +30,36 @@ class CategoryController extends AbstractController {
 		return new Response(0, $categories);
 	}
 
+    /**
+     * @Route("/view/{id}")
+     * @param $id
+     */
+    public function view ($id, CategoryRepository $category, RecetteRepository $recette){
+        $categories = $category->find(2);
+        $recettesTable = $categories->getRecettes();
+        $recettes = $recettesTable->toArray();
+
+        if($categories == null){
+            return new Response(15);
+        }
+
+        $response = [
+            'categories' => $categories,
+            'recettes'   => $recettes
+        ];
+
+        return new Response(0, $response);
+	}
+
 
 	// todo fare gaffe quand il y aura les element.
+
+    public function delete($id){
+
+        $entityManager->remove($product);
+        $entityManager->flush();
+    }
+
 
 	/**
 	 * @Route("/add", methods={"POST"})
