@@ -69,7 +69,12 @@ class RecetteController extends AbstractController{
 
 		$newRecette->setName($name);
 		$newRecette->setIngediants($ingrediants);
-		$newRecette->setIngediants($ingrediants);
+		$newRecette->setDuree($duree);
+		$newRecette->setRecette($recette);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($newRecette);
+        $em->flush();
 
 		return new Response(0);
 	}
