@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Entity\Recette;
 use App\Repository\CategoryRepository;
 use App\Repository\RecetteRepository;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -88,5 +89,53 @@ class RecetteController extends AbstractController{
         $em->remove($recette);
         $em->flush();
         return new Response(0);
+	}
+
+    /**
+     * @Route("/edit/{id}")
+     * @param                    $id
+     * @param RecetteRepository  $recetteRepository
+     * @param CategoryRepository $categoryRepository
+     * @param Request            $request
+     * @return Response
+     */
+    public function edit ($id, RecetteRepository $recetteRepository, CategoryRepository $categoryRepository, Request $request){
+
+        if($request->getMethod() === 'POST'){
+            $name       = $request->get('name', null);
+            $duree      = $request->get('duree', null);
+            $ingrediant = $request->get('ingrediant', null);
+            $recette    = $request->get('recette', null);
+
+            if($name === null OR empty($name)){
+                return new Response(8);
+            }
+            if(count($recetteRepository->findBy(['name' => $name])) > 0){
+                return new Response(10);
+            }
+
+
+            $newRecette = $recetteRepository->find($id);
+            $newRecette->setName($name);
+            $newRecette->setDuree($duree);
+            $newRecette->setIngediants($ingrediant);
+            $newRecette->setRecette($recette);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($newRecette);
+            $em->flush();
+
+            return new Response(0);
+        }
+
+        $recette = $recetteRepository->find($id);
+        $listCategory = $categoryRepository->findAll();
+
+        $response = [
+            'recette' => $recette,
+            'listCategory' => $listCategory
+        ];
+
+        return new Response(0, $response);
+
 	}
 }
