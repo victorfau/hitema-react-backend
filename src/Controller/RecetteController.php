@@ -86,7 +86,7 @@ class RecetteController extends AbstractController{
         $recette = $recetteRepository->find($id);
         $em = $this->getDoctrine()->getManager();
         $em->remove($recette);
-       // $em->flush();
+        $em->flush();
         return new Response(0);
 	}
 }

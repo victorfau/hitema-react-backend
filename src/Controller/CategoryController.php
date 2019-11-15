@@ -35,7 +35,7 @@ class CategoryController extends AbstractController {
      * @param $id
      */
     public function view ($id, CategoryRepository $category, RecetteRepository $recette){
-        $categories = $category->find(2);
+        $categories = $category->find($id);
         $recettesTable = $categories->getRecettes();
         $recettes = $recettesTable->toArray();
 
@@ -54,12 +54,44 @@ class CategoryController extends AbstractController {
 
 	// todo fare gaffe quand il y aura les element.
 
-    public function delete($id){
-
-        $entityManager->remove($product);
-        $entityManager->flush();
+    /**
+     * @Route("/delete/{id}")
+     */
+    public function delete (CategoryRepository $categoryRepository, $id){
+        $category = $categoryRepository->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($category);
+        $em->flush();
+        return new Response(0);
     }
 
+    /**
+     * @Route("/edit/{id}", methods="POST", name="category_edit")
+     * @param CategoryRepository $categoryRepository
+     * @param                    $id
+     * @param Request            $request
+     */
+    public function edit (CategoryRepository $categoryRepository, $id, Request $request){
+        //todo erreur
+
+        $name = $request->get('name', null);
+
+        if($name === null OR empty($name)){
+            return new Response(8);
+        }
+        if(sizeof($categoryRepository->findBy(["name" => $name])) > 0){
+            return new Response(10);
+        };
+
+        $category = $categoryRepository->find($id);
+        $category->setName($name);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($category);
+        $em->flush();
+
+
+        return new Response(0);
+    }
 
 	/**
 	 * @Route("/add", methods={"POST"})
