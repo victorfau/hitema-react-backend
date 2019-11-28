@@ -8,6 +8,7 @@ use App\Entity\Category;
 use App\Entity\Recette;
 use App\Repository\CategoryRepository;
 use App\Repository\RecetteRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,7 +52,7 @@ class RecetteController extends AbstractController{
 	 * @param RecetteRepository $recettes
 	 * @return Response
 	 */
-	public function add(Request $request, RecetteRepository $recettes){
+	public function add(Request $request, RecetteRepository $recettes, EntityManagerInterface $em){
 
 		$name = $request->get("name", null);
 		$ingrediants = $request->get("ingrediants", null);
@@ -73,19 +74,21 @@ class RecetteController extends AbstractController{
 		$newRecette->setDuree($duree);
 		$newRecette->setRecette($recette);
 
-        $em = $this->getDoctrine()->getManager();
         $em->persist($newRecette);
         $em->flush();
 
 		return new Response(0);
 	}
 
-	/**
+    /**
      * @Route("/delete/{id}")
+     * @param RecetteRepository      $recetteRepository
+     * @param EntityManagerInterface $em
+     * @param                        $id
+     * @return Response
      */
-    public function delete (RecetteRepository $recetteRepository, $id){
+    public function delete (RecetteRepository $recetteRepository, EntityManagerInterface $em, $id){
         $recette = $recetteRepository->find($id);
-        $em = $this->getDoctrine()->getManager();
         $em->remove($recette);
         $em->flush();
         return new Response(0);
@@ -93,13 +96,14 @@ class RecetteController extends AbstractController{
 
     /**
      * @Route("/edit/{id}")
-     * @param                    $id
-     * @param RecetteRepository  $recetteRepository
-     * @param CategoryRepository $categoryRepository
-     * @param Request            $request
+     * @param                        $id
+     * @param RecetteRepository      $recetteRepository
+     * @param CategoryRepository     $categoryRepository
+     * @param EntityManagerInterface $em
+     * @param Request                $request
      * @return Response
      */
-    public function edit ($id, RecetteRepository $recetteRepository, CategoryRepository $categoryRepository, Request $request){
+    public function edit ($id, RecetteRepository $recetteRepository, CategoryRepository $categoryRepository, EntityManagerInterface $em, Request $request){
 
         if($request->getMethod() === 'POST'){
             $name       = $request->get('name', null);
@@ -120,7 +124,6 @@ class RecetteController extends AbstractController{
             $newRecette->setDuree($duree);
             $newRecette->setIngediants($ingrediant);
             $newRecette->setRecette($recette);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($newRecette);
             $em->flush();
 

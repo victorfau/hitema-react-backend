@@ -9,6 +9,7 @@ use App\Entity\Category;
 use App\Entity\Recette;
 use App\Repository\CategoryRepository;
 use App\Repository\RecetteRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -57,9 +58,8 @@ class CategoryController extends AbstractController {
     /**
      * @Route("/delete/{id}")
      */
-    public function delete (CategoryRepository $categoryRepository, $id){
+    public function delete (CategoryRepository $categoryRepository, EntityManagerInterface $em, $id){
         $category = $categoryRepository->find($id);
-        $em = $this->getDoctrine()->getManager();
         $em->remove($category);
         $em->flush();
         return new Response(0);
@@ -71,7 +71,7 @@ class CategoryController extends AbstractController {
      * @param                    $id
      * @param Request            $request
      */
-    public function edit (CategoryRepository $categoryRepository, $id, Request $request){
+    public function edit (CategoryRepository $categoryRepository, EntityManagerInterface $em, Request $request, $id){
         //todo erreur
 
         $name = $request->get('name', null);
@@ -85,7 +85,6 @@ class CategoryController extends AbstractController {
 
         $category = $categoryRepository->find($id);
         $category->setName($name);
-        $em = $this->getDoctrine()->getManager();
         $em->persist($category);
         $em->flush();
 
@@ -99,7 +98,7 @@ class CategoryController extends AbstractController {
 	 * @param Request $request
 	 * @return Response
 	 */
-	public function add(CategoryRepository $categories, Request $request){
+	public function add(CategoryRepository $categories, EntityManagerInterface $em, Request $request){
 
 		$name = $request->get('name', null);
 
@@ -110,7 +109,6 @@ class CategoryController extends AbstractController {
 		$category = new Category();
 
 		$category->setName($name);
-		$em = $this->getDoctrine()->getManager();
 		$em->persist($category);
 		$em->flush();
 
@@ -128,7 +126,7 @@ class CategoryController extends AbstractController {
 	 * @param Request $request
 	 * @return Response
 	 */
-	public function addRecette(CategoryRepository $category, RecetteRepository $recette, Request $request){
+	public function addRecette(CategoryRepository $category, RecetteRepository $recette, EntityManagerInterface $em, Request $request){
 		$idCat = $request->get('category', null);
 		$idRecette = $request->get('recette', null);
 
@@ -139,7 +137,6 @@ class CategoryController extends AbstractController {
 		$recettes = $recette->find($idRecette);
 
 		$recettes->addRelation($categorie);
-		$em = $this->getDoctrine()->getManager();
 		$em->persist($recettes);
 		$em->flush();
 		return new Response(0);
@@ -151,7 +148,7 @@ class CategoryController extends AbstractController {
 	 * @param Request $request
 	 * @return Response
 	 */
-	public function removeRecette(CategoryRepository $category, RecetteRepository $recette, Request $request){
+	public function removeRecette(CategoryRepository $category, RecetteRepository $recette, EntityManagerInterface $em, Request $request){
 		$idCat = $request->get('category', null);
 		$idRecette = $request->get('recette', null);
 
@@ -162,7 +159,6 @@ class CategoryController extends AbstractController {
 		$recettes = $recette->find($idRecette);
 
 		$recettes->removeRelation($categorie);
-		$em = $this->getDoctrine()->getManager();
 		$em->persist($recettes);
 		$em->flush();
 		return new Response(0);

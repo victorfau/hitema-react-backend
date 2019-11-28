@@ -46,14 +46,15 @@ class CategoryRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+    *//*
 
     public function getArticleFromCategory ($idCategory){
         $qb = $this->createQueryBuilder('a');
         $qb->add('select', 'a');
         $qb->leftJoin('a.recette_category', 'c');
-        $qb->where('c.category_id LIKE :recette_category'); /* i have guessed a.name */
+        $qb->where('c.category_id LIKE :recette_category');
         $qb->setParameter('category', $idCategory);
         $qb->getQuery()->getResult();
     }
+    */
 }
