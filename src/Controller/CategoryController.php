@@ -52,9 +52,6 @@ class CategoryController extends AbstractController {
         return new Response(0, $response);
 	}
 
-
-	// todo fare gaffe quand il y aura les element.
-
     /**
      * @Route("/delete/{id}")
      */
@@ -72,7 +69,6 @@ class CategoryController extends AbstractController {
      * @param Request            $request
      */
     public function edit (CategoryRepository $categoryRepository, EntityManagerInterface $em, Request $request, $id){
-        //todo erreur
 
         $name = $request->get('name', null);
 
@@ -116,8 +112,6 @@ class CategoryController extends AbstractController {
 
 		return new Response(0, $response);
 	}
-
-	// todo supprimer une category
 
 	/**
 	 * @Route("/add/recette")

@@ -58,6 +58,7 @@ class RecetteController extends AbstractController{
 		$ingrediants = $request->get("ingrediants", null);
 		$duree = $request->get("duree", null);
 		$recette = $request->get("recette", null);
+		$img = $request->get('img', null);
 
 		if ($name == null OR $ingrediants == null OR $duree == null OR $recette == null){
 			return new Response(8);
@@ -73,6 +74,7 @@ class RecetteController extends AbstractController{
 		$newRecette->setIngediants($ingrediants);
 		$newRecette->setDuree($duree);
 		$newRecette->setRecette($recette);
+		$newRecette->setImg($img);
 
         $em->persist($newRecette);
         $em->flush();
@@ -110,6 +112,7 @@ class RecetteController extends AbstractController{
             $duree      = $request->get('duree', null);
             $ingrediant = $request->get('ingrediant', null);
             $recette    = $request->get('recette', null);
+            $img        = $request->get('img', null);
 
             if($name === null OR empty($name)){
                 return new Response(8);
@@ -124,6 +127,7 @@ class RecetteController extends AbstractController{
             $newRecette->setDuree($duree);
             $newRecette->setIngediants($ingrediant);
             $newRecette->setRecette($recette);
+            $newRecette->setImg($img);
             $em->persist($newRecette);
             $em->flush();
 

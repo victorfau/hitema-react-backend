@@ -48,6 +48,11 @@ class Recette implements \JsonSerializable
      */
     private $relation;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $img;
+
     public function __construct()
     {
         $this->relation = new ArrayCollection();
@@ -145,14 +150,26 @@ class Recette implements \JsonSerializable
     }
 
 	public function jsonSerialize():array {
-		return [
-			"id"         => $this->getId(),
-			"name"       => $this->getName(),
-			"ingrediant" => $this->getIngediants(),
-			"duree"      => $this->getDuree(),
-			"recette"    => $this->getRecette(),
-			"author"     => $this->getAuthor(),
-			"category"   => $this->getRelation()->toArray()
-		];
-	}
+         		return [
+         			"id"         => $this->getId(),
+         			"name"       => $this->getName(),
+         			"ingrediant" => $this->getIngediants(),
+         			"duree"      => $this->getDuree(),
+         			"recette"    => $this->getRecette(),
+         			"author"     => $this->getAuthor(),
+         			"category"   => $this->getRelation()->toArray()
+         		];
+         	}
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
+
+        return $this;
+    }
 }
