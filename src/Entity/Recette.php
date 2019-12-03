@@ -157,7 +157,8 @@ class Recette implements \JsonSerializable
          			"duree"      => $this->getDuree(),
          			"recette"    => $this->getRecette(),
          			"author"     => $this->getAuthor(),
-         			"category"   => $this->getRelation()->toArray()
+         			"category"   => $this->getRelation()->toArray(),
+                    'img'        => $this->getImg()
          		];
          	}
 
