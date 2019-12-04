@@ -11,16 +11,15 @@ use App\Repository\CategoryRepository;
 use App\Repository\RecetteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/category")
  */
-class CategoryController extends AbstractController {
+class CategoryController extends BackendController {
 
-	/**
+    /**
 	 * @Route("/")
 	 * @param CategoryRepository $category
 	 * @return Response
