@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController,
     Symfony\Component\Routing\Annotation\Route,
-    App\Entity\Users,
     App\Repository\UsersRepository;
 
 /**
@@ -44,7 +43,7 @@ class LoginController extends AbstractController {
             return new Response(49);
         }
 
-        if(true){
+        if(password_verify($password, $users[0]->getPassword())){
             $session->start();
             $session->set('logged', true);
             $session->set('name', $users[0]->getName());
