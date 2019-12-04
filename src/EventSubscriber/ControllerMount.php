@@ -34,7 +34,7 @@ class ControllerMount implements EventSubscriberInterface {
             return;
         }
         if($controller[0] instanceof BackendController){
-            if(($this->session->get('logged', false) === false) && ($_ENV['APP_ENV'] !== 'devit ')){
+            if(($this->session->get('logged', false) === false) && ($_ENV['APP_ENV'] !== 'prod')){
                 $event->setController(static function()
                 {
                     return new Response(3);

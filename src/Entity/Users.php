@@ -88,4 +88,10 @@ class Users
 
         return $this;
     }
+
+    public function checkPassword(string $input, string $passwordHash):bool {
+        if($input === $passwordHash)
+            return false;
+        return true;
+    }
 }
