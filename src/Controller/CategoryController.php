@@ -1,4 +1,9 @@
-<?php /** @noinspection ALL */
+<?php /**
+ * editor : victor fau
+ * contact : victorrfau@gmail.com
+ * context : school
+ */
+
 
 
 namespace App\Controller;
@@ -6,11 +11,9 @@ namespace App\Controller;
 
 use App\Assets\Response;
 use App\Entity\Category;
-use App\Entity\Recette;
 use App\Repository\CategoryRepository;
 use App\Repository\RecetteRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -63,20 +66,22 @@ class CategoryController extends BackendController {
 
     /**
      * @Route("/edit/{id}", methods="POST", name="category_edit")
-     * @param CategoryRepository $categoryRepository
-     * @param                    $id
-     * @param Request            $request
+     * @param CategoryRepository     $categoryRepository
+     * @param EntityManagerInterface $em
+     * @param Request                $request
+     * @param                        $id
+     * @return Response
      */
-    public function edit (CategoryRepository $categoryRepository, EntityManagerInterface $em, Request $request, $id){
+    public function edit (CategoryRepository $categoryRepository, EntityManagerInterface $em, Request $request, $id): Response{
 
         $name = $request->get('name', null);
 
         if($name === null OR empty($name)){
             return new Response(8);
         }
-        if(sizeof($categoryRepository->findBy(["name" => $name])) > 0){
+        if(count($categoryRepository->findBy(["name" => $name])) > 0){
             return new Response(10);
-        };
+        }
 
         $category = $categoryRepository->find($id);
         $category->setName($name);
@@ -87,13 +92,14 @@ class CategoryController extends BackendController {
         return new Response(0);
     }
 
-	/**
-	 * @Route("/add", methods={"POST"})
-	 * @param CategoryRepository $categories
-	 * @param Request $request
-	 * @return Response
-	 */
-	public function add(CategoryRepository $categories, EntityManagerInterface $em, Request $request){
+    /**
+     * @Route("/add", methods={"POST"})
+     * @param CategoryRepository     $categories
+     * @param EntityManagerInterface $em
+     * @param Request                $request
+     * @return Response
+     */
+	public function add(CategoryRepository $categories, EntityManagerInterface $em, Request $request): Response{
 
 		$name = $request->get('name', null);
 
@@ -107,19 +113,20 @@ class CategoryController extends BackendController {
 		$em->persist($category);
 		$em->flush();
 
-		$response = $categories->findBy(["name" => $name]);
+		$response = $categories->findBy(['name' => $name]);
 
 		return new Response(0, $response);
 	}
 
-	/**
-	 * @Route("/add/recette")
-	 * @param CategoryRepository $category
-	 * @param RecetteRepository $recette
-	 * @param Request $request
-	 * @return Response
-	 */
-	public function addRecette(CategoryRepository $category, RecetteRepository $recette, EntityManagerInterface $em, Request $request){
+    /**
+     * @Route("/add/recette")
+     * @param CategoryRepository     $category
+     * @param RecetteRepository      $recette
+     * @param EntityManagerInterface $em
+     * @param Request                $request
+     * @return Response
+     */
+	public function addRecette(CategoryRepository $category, RecetteRepository $recette, EntityManagerInterface $em, Request $request): Response{
 		$idCat = $request->get('category', null);
 		$idRecette = $request->get('recette', null);
 
@@ -145,7 +152,7 @@ class CategoryController extends BackendController {
 		$idCat = $request->get('category', null);
 		$idRecette = $request->get('recette', null);
 
-		if($recette->find($idRecette) == null OR $category->find($idCat) == null){
+		if($recette->find($idRecette) == null || $category->find($idCat) == null){
 			return new Response(15);
 		}
 		$categorie = $category->find($idCat);
