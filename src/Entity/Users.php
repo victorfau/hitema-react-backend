@@ -29,17 +29,57 @@ class Users
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    private $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
     private $role;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $adressNumber;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $street;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $zipCode;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $city;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $country;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $crearedAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $modifiedAt;
 
     public function getId(): ?int
     {
@@ -98,5 +138,101 @@ class Users
         if($input === $passwordHash)
             return false;
         return true;
+    }
+
+    public function getAdressNumber(): ?string
+    {
+        return $this->adressNumber;
+    }
+
+    public function setAdressNumber(?string $adressNumber): self
+    {
+        $this->adressNumber = $adressNumber;
+
+        return $this;
+    }
+
+    public function getStreet(): ?string
+    {
+        return $this->street;
+    }
+
+    public function setStreet(?string $street): self
+    {
+        $this->street = $street;
+
+        return $this;
+    }
+
+    public function getZipCode(): ?string
+    {
+        return $this->zipCode;
+    }
+
+    public function setZipCode(?string $zipCode): self
+    {
+        $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(?string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?string $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getCrearedAt(): ?\DateTimeInterface
+    {
+        return $this->crearedAt;
+    }
+
+    public function setCrearedAt(\DateTimeInterface $crearedAt): self
+    {
+        $this->crearedAt = $crearedAt;
+
+        return $this;
+    }
+
+    public function getModifiedAt(): ?\DateTimeInterface
+    {
+        return $this->modifiedAt;
+    }
+
+    public function setModifiedAt(\DateTimeInterface $modifiedAt): self
+    {
+        $this->modifiedAt = $modifiedAt;
+
+        return $this;
     }
 }

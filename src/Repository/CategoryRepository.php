@@ -1,9 +1,4 @@
 <?php
-/**
- * editor : victor fau
- * contact : victorrfau@gmail.com
- * context : school
- */
 
 namespace App\Repository;
 
@@ -24,22 +19,22 @@ class CategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, Category::class);
     }
 
-    /**
-     * @param int $id
-     * @return void Returns an array of Category objects
-     */
-
-   // public function add($value)
-   // {
-   //     return $this->createQueryBuilder('c')
-   //         ->andWhere('c.exampleField = :val')
-   //         ->setParameter('val', $value)
-   //         ->orderBy('c.id', 'ASC')
-   //         ->setMaxResults(10)
-   //         ->getQuery()
-   //         ->getResult()
-   //     ;
-   // }
+    // /**
+    //  * @return Category[] Returns an array of Category objects
+    //  */
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('c.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
 
     /*
     public function findOneBySomeField($value): ?Category
@@ -50,16 +45,6 @@ class CategoryRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
-    }
-    *//*
-
-    public function getArticleFromCategory ($idCategory){
-        $qb = $this->createQueryBuilder('a');
-        $qb->add('select', 'a');
-        $qb->leftJoin('a.recette_category', 'c');
-        $qb->where('c.category_id LIKE :recette_category');
-        $qb->setParameter('category', $idCategory);
-        $qb->getQuery()->getResult();
     }
     */
 }
