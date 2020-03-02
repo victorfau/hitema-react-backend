@@ -17,5 +17,5 @@ final class Events {
      *
      * @var string
      */
-    const USER_CONNECTED = 'user.isConnected';
+    public const USER_CONNECTED = 'user.isConnected';
 }

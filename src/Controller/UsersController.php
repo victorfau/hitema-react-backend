@@ -7,12 +7,10 @@
 
 namespace App\Controller;
 
-use http\Client\Curl\User;
 use App\Repository\UsersRepository;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Users;
-use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Assets\Response;
 
@@ -21,7 +19,7 @@ use App\Assets\Response;
  * @package App\Controller
  * @Route("/users")
  */
-class UsersController extends AbstractController {
+class UsersController extends AdminController {
 
     /**
      * @Route("/")

@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
-class Article
+class Article implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -34,7 +36,7 @@ class Article
     /**
      * @ORM\Column(type="integer")
      */
-    private $clap;
+    private $clap = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="articles")
@@ -138,5 +140,25 @@ class Article
         $this->name = $name;
 
         return $this;
+    }
+
+    /**
+     * Specify data which should be serialized to JSON
+     * @link  https://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    public function jsonSerialize (){
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'img' => $this->getImg(),
+            'content' => $this->getContent(),
+            'category' => $this->getCategory(),
+            'clap' => $this->getClap(),
+            'createdAt' => $this->getCreatedAt(),
+            'modifiedAt' => $this->getModifiedAt()
+        ];
     }
 }
