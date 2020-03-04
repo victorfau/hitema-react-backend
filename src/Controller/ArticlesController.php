@@ -5,12 +5,6 @@
  * contact: victrrfau@gmail.com
  */
 
-/**
- * editor : victor fau
- * contact : victorrfau@gmail.com
- * context : school
- */
-
 namespace App\Controller;
 
 use App\Repository\ArticleRepository;

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer;
 
@@ -52,6 +54,22 @@ class Article implements \JsonSerializable
      * @ORM\Column(type="datetime")
      */
     private $modifiedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Users", inversedBy="auteur")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $auteur;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="Article")
+     */
+    private $votes;
+
+    public function __construct()
+    {
+        $this->votes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -158,7 +176,51 @@ class Article implements \JsonSerializable
             'category' => $this->getCategory(),
             'clap' => $this->getClap(),
             'createdAt' => $this->getCreatedAt(),
-            'modifiedAt' => $this->getModifiedAt()
+            'modifiedAt' => $this->getModifiedAt(),
+	        'auteur' => $this->getAuteur()
         ];
+    }
+
+    public function getAuteur(): ?Users
+    {
+        return $this->auteur;
+    }
+
+    public function setAuteur(?Users $auteur): self
+    {
+        $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vote[]
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->contains($vote)) {
+            $this->votes->removeElement($vote);
+            // set the owning side to null (unless already changed)
+            if ($vote->getArticle() === $this) {
+                $vote->setArticle(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -1,0 +1,1 @@
+INSERT INTO react.vote (id, user_id, article_id) VALUES (2, 1, 2);

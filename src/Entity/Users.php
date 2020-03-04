@@ -7,6 +7,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -90,6 +92,22 @@ class Users
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $img;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Article", mappedBy="auteur")
+     */
+    private $auteur;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="user")
+     */
+    private $votes;
+
+    public function __construct()
+    {
+        $this->auteur = new ArrayCollection();
+        $this->votes = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -266,6 +284,68 @@ class Users
     public function setImg(?string $img): self
     {
         $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Article[]
+     */
+    public function getAuteur(): Collection
+    {
+        return $this->auteur;
+    }
+
+    public function addAuteur(Article $auteur): self
+    {
+        if (!$this->auteur->contains($auteur)) {
+            $this->auteur[] = $auteur;
+            $auteur->setAuteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAuteur(Article $auteur): self
+    {
+        if ($this->auteur->contains($auteur)) {
+            $this->auteur->removeElement($auteur);
+            // set the owning side to null (unless already changed)
+            if ($auteur->getAuteur() === $this) {
+                $auteur->setAuteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Vote[]
+     */
+    public function getVotes(): Collection
+    {
+        return $this->votes;
+    }
+
+    public function addVote(Vote $vote): self
+    {
+        if (!$this->votes->contains($vote)) {
+            $this->votes[] = $vote;
+            $vote->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): self
+    {
+        if ($this->votes->contains($vote)) {
+            $this->votes->removeElement($vote);
+            // set the owning side to null (unless already changed)
+            if ($vote->getUser() === $this) {
+                $vote->setUser(null);
+            }
+        }
 
         return $this;
     }

@@ -78,7 +78,9 @@ class Response extends Res{
 		'data' => $content
 	];
         $serializer = new Serializer($normalizers, $encoder);
-        $response = $serializer->serialize($response, 'json', array('enable_max_depth' => true));
+        $response = $serializer->serialize($response, 'json', ['circular_reference_handler' => function ($object) {
+	        return $object->getId();
+        }]);
 
 		parent::__construct($response, $status, $headers);
 
